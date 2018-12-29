@@ -8,7 +8,7 @@ from cells import Cells
 import pygame
 from pygame.locals import *
 
-FPS = 60.0
+FPS = 10.0
 
 class Game:
 
@@ -22,7 +22,7 @@ class Game:
     width, height = 640, 640
     self.screen = pygame.display.set_mode((width, height))
 
-    initial_state = [[bool(random.getrandbits(1)) for j in range(32)] for i in range(32)]
+    initial_state = [[random.getrandbits(1) for j in range(32)] for i in range(32)]
     self.cells = Cells(initial_state)
 
     # Main game loop.
@@ -36,12 +36,13 @@ class Game:
         sys.exit() # Not including this line crashes the script on Windows. Possibly
         # on other operating systems too, but I don't know for sure.
       # Handle other events as you wish.
-
+    self.cells.update()
+    
   def draw(self, screen):
     """
     Draw things to the window. Called once per frame.
     """
-    screen.fill((0, 0, 0)) # Fill the screen with black.
+    screen.fill((255, 255, 255)) # Fill the screen with black.
     self.cells.draw(screen)
     # Redraw screen here.
 
