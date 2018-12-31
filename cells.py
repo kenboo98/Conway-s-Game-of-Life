@@ -32,7 +32,13 @@ class Cells:
                     cell_width = screen.get_width()/self.width
                     cell_height = screen.get_height()/self.height
                     draw.rect(screen, (0,0,0),(i*cell_width, j*cell_height, cell_width, cell_height))
-
+    
+    def handleClick(self, pos, screen_width, screen_height):
+        x = int(pos[0]/(screen_width/self.width))
+        y = int(pos[1]/(screen_height/self.height))
+        self.state[y][x] = DEAD if self.state[y][x] else ALIVE
+    def clear(self):
+        self.state = [[0 for j in range(32)] for i in range(32)]
     def update(self):
         for j in range(self.height):
             for i in range(self.width):

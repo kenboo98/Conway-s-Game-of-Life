@@ -19,12 +19,12 @@ class Game:
     # Set up the clock. This will tick every frame and thus maintain a relatively constant framerate. Hopefully.
     self.fpsClock = pygame.time.Clock()
     # Set up the window.
-    width, height = 640, 640
-    self.screen = pygame.display.set_mode((width, height))
+    self.width, self.height = 640, 640
+    self.screen = pygame.display.set_mode((self.width, self.height))
 
-    initial_state = [[random.getrandbits(1) for j in range(32)] for i in range(32)]
+    initial_state = [[0 for j in range(32)] for i in range(32)]
     self.cells = Cells(initial_state)
-
+    self.paused = False
     # Main game loop.
   def update(self, dt):
     for event in pygame.event.get():
@@ -36,7 +36,15 @@ class Game:
         sys.exit() # Not including this line crashes the script on Windows. Possibly
         # on other operating systems too, but I don't know for sure.
       # Handle other events as you wish.
-    self.cells.update()
+      if event.type == KEYDOWN:
+        if event.key == K_SPACE:
+          self.paused = False if self.paused else True  
+        if event.key == K_c:
+          self.cells.clear()
+      if event.type == MOUSEBUTTONDOWN:
+        self.cells.handleClick(event.pos,self.width, self.height)
+    if not self.paused:
+      self.cells.update()
     
   def draw(self, screen):
     """
